@@ -24,7 +24,7 @@ def main():
     print(f"Test result for part 2: {result}")
     print("Example input for part 2 passed!")
     print("Running actual input for part 2...")
-    #print(f"Part 2 result: {part2(input_file_path)}")
+    print(f"Part 2 result: {part2(input_file_path)}")
 
 def part1(file):
     sum = 0
@@ -43,26 +43,26 @@ def part1(file):
         return sum
 
 def part2(file):
-    sum = 0
     with open(file, 'r') as f:
         banks = f.read().splitlines()
-        for bank in banks:
-            res = part2_help(bank, 0, 11)
-            print(f"Bank: {bank}, res: {res}")
-            sum += res
-        return sum
+        return sum(int(max_j(bank, 12)) for bank in banks)
                 
 
-def part2_help(bank, pos, pow, mem):
-    if pow == 0 or pos == len(bank) - 1:
-        return int(bank[pos])
+def max_j(bank, remaining):
+    if (remaining == 0): return ""
+    max_index = max_index_in_subbank(bank[:len(bank)-remaining+1])
+    return bank[max_index] + max_j(bank[max_index + 1:], remaining - 1)
     
-    if pow > len(bank)-pos-1:
-        return 0
+    
+def max_index_in_subbank(bank):
+    max_index = 0
+    for i,pos in enumerate(bank):
+        if int(bank[i]) > int(bank[max_index]):
+            max_index = i
 
-    pow_num = 10**pow * int(bank[pos])
-    return max(pow_num + part2_help(bank, pos+1, pow-1), part2_help(bank, pos+1, pow))
+    return max_index
 
 if __name__ == "__main__":
     main()
+    print("Help")
 
